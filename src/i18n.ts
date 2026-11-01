@@ -35,7 +35,7 @@ export const t = {
       line: 'Builds things that see, sense, and explain. Spends the evenings in row G, watching other people tell stories.',
       fields: [
         ['Program', 'MS, Electrical & Computer Engineering'],
-        ['Venue', 'Carnegie Mellon University'],
+        ['School', 'Carnegie Mellon University'],
         ['Run', 'Aug 2026 – Dec 2027'],
       ],
       stub: ['ECE', 'MS', "'27"],
@@ -103,7 +103,7 @@ export const t = {
       fields: [
         ['과정', '전기·컴퓨터공학 석사 (MS ECE)'],
         ['장소', '카네기멜론 대학교'],
-        ['공연 기간', '2026년 8월 – 2027년 12월'],
+        ['기간', '2026년 8월 – 2027년 12월'],
       ],
       stub: ['ECE', 'MS', "'27"],
       stubLabels: ['학과', '과정', '졸업'],
