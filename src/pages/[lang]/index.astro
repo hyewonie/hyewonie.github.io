@@ -81,7 +81,7 @@ const reviews = (await getCollection('reviews', (r) => splitId(r.id).lang === la
       radial-gradient(circle 16px at calc(100% - 7.5rem) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
   }
   .face { padding: clamp(1.5rem, 5vw, 3.5rem); border-top: 8px solid var(--curtain); border-radius: 10px 0 0 0; min-width: 0; }
-  .admit { font-family: var(--display); font-style: italic; color: var(--curtain); font-size: 1.15rem; margin-bottom: 0.4rem; }
+  .admit { font-family: var(--display); font-weight: 700; color: var(--curtain); font-size: 1.15rem; margin-bottom: 0.4rem; }
   h1 { margin-bottom: 1.2rem; }
   .line { font-size: clamp(1.1rem, 2.2vw, 1.3rem); max-width: 40ch; margin-bottom: 2rem; }
   .fields { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin: 0 0 1.75rem; }
@@ -92,7 +92,7 @@ const reviews = (await getCollection('reviews', (r) => splitId(r.id).lang === la
     border-top: 8px solid var(--brass); border-radius: 0 10px 0 0;
     display: grid; align-content: space-evenly; justify-items: center; text-align: center; padding: 1.5rem 0.5rem;
   }
-  .stubside dd { margin: 0; font-family: var(--display); font-size: 1.9rem; font-weight: 600; }
+  .stubside dd { margin: 0; font-family: var(--display); font-size: 1.9rem; font-weight: 800; }
 
   .program { list-style: none; padding: 0; margin: 0 0 1.5rem; border-top: 1px solid var(--rule); }
   .program li { display: grid; grid-template-columns: 11rem 1fr; gap: 0.4rem 1.5rem; padding: 1.4rem 0; border-bottom: 1px solid var(--rule); }
