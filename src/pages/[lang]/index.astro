@@ -3,7 +3,8 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Waveform from '../../components/Waveform.astro';
 import TicketStub from '../../components/TicketStub.astro';
-import { langs, t, url, splitId, type Lang } from '../../i18n';
+import { Image } from 'astro:assets';
+import { langs, t, url, splitId, instagram, type Lang } from '../../i18n';
 
 export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
 
@@ -14,6 +15,9 @@ const projects = (await getCollection('projects', (p) => splitId(p.id).lang === 
   .sort((a, b) => a.data.order - b.data.order);
 const reviews = (await getCollection('reviews', (r) => splitId(r.id).lang === lang))
   .sort((a, b) => b.data.seen.valueOf() - a.data.seen.valueOf())
+  .slice(0, 3);
+const drawings = (await getCollection('drawings'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 ---
 
@@ -54,6 +58,28 @@ const reviews = (await getCollection('reviews', (r) => splitId(r.id).lang === la
       ))}
     </ol>
     <p><a class="text-link" href={url(`${lang}/projects/`)}>{s.allProjects}</a></p>
+  </section>
+
+  <section class="wrap" aria-labelledby="interval">
+    <header class="act">
+      <span class="act-no">{s.intermission}</span>
+      <h2 id="interval">{s.intermissionTitle}</h2>
+      <p class="lede">{s.intermissionLede}</p>
+    </header>
+    <ul class="sketches">
+      {drawings.map((d) => (
+        <li>
+          <a href={url(`${lang}/drawings/`)}>
+            <Image src={d.data.image} alt={d.data.alt?.[lang] ?? d.data.title[lang]} widths={[300, 600]} sizes="(max-width: 640px) 50vw, 340px" />
+            <span>{d.data.title[lang]}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p>
+      <a class="text-link" href={url(`${lang}/drawings/`)}>{s.allDrawings}</a>
+      <a class="text-link insta" href={instagram.href} target="_blank" rel="noopener">Instagram {instagram.handle}</a>
+    </p>
   </section>
 
   <section class="wrap" aria-labelledby="act2">
@@ -104,10 +130,18 @@ const reviews = (await getCollection('reviews', (r) => splitId(r.id).lang === la
   .program .highlight { color: var(--signal); font-weight: 500; margin-top: 0.4rem; }
   .stubs { display: grid; gap: 1.1rem; margin-bottom: 1.5rem; }
 
+  .sketches { list-style: none; padding: 0; margin: 0 0 1.5rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; align-items: start; }
+  .sketches a { display: block; text-decoration: none; padding: 0.7rem; background: var(--paper); border: 1px solid var(--rule); border-radius: 3px; }
+  .sketches a:hover { border-color: var(--signal); }
+  .sketches img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
+  .sketches span { display: block; margin-top: 0.6rem; font-family: var(--display); font-weight: 700; }
+  .insta { margin-left: 1.5rem; }
+
   @media (max-width: 640px) {
     .ticket { grid-template-columns: 1fr; -webkit-mask: none; mask: none; }
     .face { border-radius: 10px 10px 0 0; }
     .stubside { border-left: none; border-top: 2px dashed var(--rule); border-radius: 0 0 10px 10px; grid-template-columns: repeat(3, 1fr); padding: 1rem; }
     .program li { grid-template-columns: 1fr; }
+    .sketches { grid-template-columns: repeat(2, 1fr); }
   }
 </style>

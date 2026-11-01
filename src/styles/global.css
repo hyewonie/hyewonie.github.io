@@ -63,7 +63,7 @@ p { margin: 0 0 1em; }
 .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* Section heading for the two "acts": act number sits in the margin like a playbill. */
-.act { display: grid; grid-template-columns: 6rem 1fr; gap: 0 1.5rem; align-items: baseline; margin: 5rem 0 2rem; }
+.act { display: grid; grid-template-columns: 8.5rem 1fr; gap: 0 1.5rem; align-items: baseline; margin: 5rem 0 2rem; }
 .act-no { font-family: var(--display); font-weight: 700; color: var(--curtain); font-size: 1.25rem; }
 .act .lede { grid-column: 2; margin-top: 0.5rem; }
 @media (max-width: 640px) {

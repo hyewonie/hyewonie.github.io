@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Waveform from '../../components/Waveform.astro';
-import { langs, t, url, type Lang } from '../../i18n';
+import { langs, t, url, instagram, type Lang } from '../../i18n';
 
 export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
 
@@ -99,6 +99,7 @@ const skills = [
       <section aria-labelledby="contact" class="contact">
         <h2 id="contact">{s.contact}</h2>
         <p><span class="label">{s.email}</span> <a href="mailto:hyewonj@andrew.cmu.edu">hyewonj@andrew.cmu.edu</a></p>
+        <p><span class="label">Instagram</span> <a href={instagram.href} target="_blank" rel="noopener">{instagram.handle}</a></p>
         <p><a class="resume" href={url('Hyewon_Jung_Resume.pdf')} download>{s.resume}</a></p>
       </section>
     </div>

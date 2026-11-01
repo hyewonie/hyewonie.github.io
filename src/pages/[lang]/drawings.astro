@@ -1,0 +1,82 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import DrawingCard from '../../components/DrawingCard.astro';
+import { langs, t, instagram, type Lang } from '../../i18n';
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const s = t[lang].drawings;
+const drawings = (await getCollection('drawings')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<Base lang={lang} title={s.title} description={s.lede[0]}>
+  <div class="wrap">
+    <header class="head">
+      <h1>{s.title}</h1>
+      <div class="lede">{s.lede.map((p) => <p>{p}</p>)}</div>
+      <a class="insta" href={instagram.href} target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4.2" /><circle cx="17.4" cy="6.6" r="1" class="dot" /></svg>
+        {s.instagram}
+      </a>
+    </header>
+
+    {drawings.length > 0 ? (
+      <div class="wall">{drawings.map((d) => <DrawingCard drawing={d} lang={lang} />)}</div>
+    ) : (
+      <p class="empty">{s.empty}</p>
+    )}
+  </div>
+
+  <dialog class="lightbox" aria-label={s.view}>
+    <form method="dialog"><button class="close">{s.close}</button></form>
+    <img alt="" />
+    <p class="lb-title"></p>
+    <p class="lb-caption"></p>
+  </dialog>
+</Base>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('dialog.lightbox')!;
+  const img = dialog.querySelector('img')!;
+  document.querySelectorAll<HTMLButtonElement>('.frame').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      img.src = btn.dataset.full ?? '';
+      img.alt = btn.dataset.alt ?? '';
+      dialog.querySelector('.lb-title')!.textContent = btn.dataset.title ?? '';
+      dialog.querySelector('.lb-caption')!.textContent = btn.dataset.caption ?? '';
+      dialog.showModal();
+    }),
+  );
+  // Clicking the backdrop (outside the dialog box) closes it.
+  dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+</script>
+
+<style>
+  .head { padding: clamp(2rem, 6vw, 4rem) 0 2.5rem; }
+  h1 { margin-bottom: 1rem; }
+  .lede p { margin-bottom: 0.6rem; }
+  .insta {
+    display: inline-flex; align-items: center; gap: 0.55rem; margin-top: 1rem;
+    padding: 0.6rem 1.15rem; border-radius: 999px; background: var(--curtain); color: var(--bg);
+    font-weight: 600; text-decoration: none;
+  }
+  .insta:hover { color: var(--bg); filter: brightness(1.15); }
+  .insta svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  .insta .dot { fill: currentColor; stroke: none; }
+
+  .wall { columns: 3 300px; column-gap: 2rem; }
+  .empty { color: var(--ink-soft); }
+
+  .lightbox {
+    max-width: min(92vw, 1100px); max-height: 92vh; padding: 1.25rem; border: none; border-radius: 6px;
+    background: var(--paper); color: var(--ink);
+  }
+  .lightbox::backdrop { background: color-mix(in srgb, var(--ink) 75%, transparent); }
+  .lightbox img { max-height: 64vh; width: auto; margin-inline: auto; }
+  .lightbox form { display: flex; justify-content: flex-end; margin-bottom: 0.75rem; }
+  .close { font: 500 0.9rem var(--body); color: var(--ink); background: none; border: 1.5px solid var(--rule); border-radius: 999px; padding: 0.3rem 0.9rem; cursor: pointer; }
+  .lb-title { font-family: var(--display); font-weight: 700; font-size: 1.25rem; margin: 1rem 0 0.25rem; }
+  .lb-caption { color: var(--ink-soft); margin: 0; max-width: 60ch; }
+</style>

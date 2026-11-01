@@ -30,6 +30,30 @@ npm run build    # dist/ 에 정적 파일 생성
 
 샘플 파일(`sample-*.md`)은 실제 후기를 올린 뒤 지우면 된다.
 
+## 그림 추가하기
+
+1. 그림 파일(jpg/png/webp)을 `src/content/drawings/images/`에 넣는다. 크기는 자동으로 최적화된다.
+2. `src/content/drawings/`에 `그림이름.md`를 만든다. 한 파일에 한/영 둘 다 쓴다:
+
+   ```yaml
+   ---
+   image: ./images/hadestown-orpheus.jpg
+   date: 2026-11-01
+   show: Hadestown            # 선택: 관련 공연. 없으면 줄 삭제
+   title:
+     en: Orpheus, act two
+     ko: 2막의 오르페우스
+   caption:
+     en: One or two sentences about the drawing.
+     ko: 그림에 대한 한두 문장.
+   alt:                       # 선택: 화면 낭독기용 그림 설명
+     en: Pencil sketch of a singer with a guitar
+     ko: 기타를 든 가수를 그린 연필 스케치
+   ---
+   ```
+
+3. 최신 날짜 순으로 그림 페이지와 홈의 "인터미션" 섹션에 나온다. 샘플(`sample-*.md`, `images/sample-*.png`)은 진짜 그림을 올린 뒤 지우면 된다.
+
 ## 프로젝트 추가하기
 
 `src/content/projects/{en,ko}/`에 같은 방식으로. `order`가 작을수록 위에 나온다.

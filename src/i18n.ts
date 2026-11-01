@@ -24,10 +24,12 @@ export function formatDate(d: Date, lang: Lang, style: 'long' | 'short' = 'long'
   });
 }
 
+export const instagram = { handle: '@hyewon_draw', href: 'https://www.instagram.com/hyewon_draw/' };
+
 export const t = {
   en: {
     name: 'Hyewon Jung',
-    nav: { home: 'Home', projects: 'Projects', reviews: 'Reviews', about: 'About' },
+    nav: { home: 'Home', projects: 'Projects', reviews: 'Reviews', drawings: 'Drawings', about: 'About' },
     switchTo: '한국어',
     switchLabel: 'Read this page in Korean',
     hero: {
@@ -47,8 +49,25 @@ export const t = {
     actTwo: 'Act II',
     actTwoTitle: 'From the audience',
     actTwoLede: 'Notes on the plays and musicals I see, written the night of or the morning after.',
+    intermission: 'Intermission',
+    intermissionTitle: 'In the sketchbook',
+    intermissionLede: 'I draw what I love, which usually means whatever was on stage last week.',
     allProjects: 'All projects',
     allReviews: 'All reviews',
+    allDrawings: 'All drawings',
+    drawings: {
+      title: 'Drawings',
+      lede: [
+        'I draw the things I love. Most of the time that means theatre: a costume that caught the light, a cast mid-bow, the moment a song turned the room.',
+        'Newer sketches usually land on Instagram first.',
+      ],
+      instagram: 'Follow @hyewon_draw on Instagram',
+      from: 'From',
+      sample: 'Sample',
+      view: 'View larger',
+      close: 'Close',
+      empty: 'No drawings posted yet. Find the latest on Instagram.',
+    },
     reviews: {
       title: 'Reviews',
       lede: 'Every show I see gets a ticket here. Filter by kind, or scroll by season.',
@@ -81,7 +100,7 @@ export const t = {
       intro: [
         "I'm Hyewon, a first-year master's student in Electrical and Computer Engineering at Carnegie Mellon. Before Pittsburgh I spent four years at Johns Hopkins studying electrical engineering and computer science.",
         'My work sits where computer vision meets people: feedback for surgeons-in-training, a board game that children with visual impairments can play with sighted friends, and MRI sequence classification for cardiac imaging.',
-        'Off the bench I am usually at the theatre. I keep a review for every show here, in English and Korean.',
+        'Off the bench I am usually at the theatre, and afterwards at my sketchbook. I keep a review for every show here, in English and Korean, and post drawings of the ones that stay with me.',
       ],
       education: 'Education',
       experience: 'Work',
@@ -94,7 +113,7 @@ export const t = {
   },
   ko: {
     name: '정혜원',
-    nav: { home: '홈', projects: '프로젝트', reviews: '관람 후기', about: '소개' },
+    nav: { home: '홈', projects: '프로젝트', reviews: '관람 후기', drawings: '그림', about: '소개' },
     switchTo: 'English',
     switchLabel: '이 페이지를 영어로 보기',
     hero: {
@@ -114,8 +133,25 @@ export const t = {
     actTwo: '2막',
     actTwoTitle: '객석에서',
     actTwoLede: '보고 온 연극과 뮤지컬에 대한 기록. 공연 당일 밤이나 다음 날 아침에 씁니다.',
+    intermission: '인터미션',
+    intermissionTitle: '스케치북 속',
+    intermissionLede: '좋아하는 걸 그립니다. 대개는 지난주 무대 위에 있던 것들이에요.',
     allProjects: '프로젝트 전체 보기',
     allReviews: '후기 전체 보기',
+    allDrawings: '그림 전체 보기',
+    drawings: {
+      title: '그림',
+      lede: [
+        '좋아하는 것을 그립니다. 그게 대부분 연극과 뮤지컬이에요. 조명을 받은 의상, 커튼콜 속 배우들, 노래 한 곡에 객석 공기가 바뀌던 순간 같은 것들.',
+        '새 그림은 보통 인스타그램에 먼저 올라가요.',
+      ],
+      instagram: '인스타그램 @hyewon_draw 팔로우하기',
+      from: '공연',
+      sample: '샘플',
+      view: '크게 보기',
+      close: '닫기',
+      empty: '아직 올린 그림이 없어요. 최신 그림은 인스타그램에서 볼 수 있어요.',
+    },
     reviews: {
       title: '관람 후기',
       lede: '본 공연마다 티켓 한 장씩. 장르로 거르거나 시즌별로 내려보세요.',
@@ -148,7 +184,7 @@ export const t = {
       intro: [
         '카네기멜론 대학교 전기·컴퓨터공학(ECE) 석사 1년차 정혜원입니다. 피츠버그에 오기 전에는 존스홉킨스 대학교에서 전기공학과 컴퓨터과학을 공부했어요.',
         '컴퓨터 비전이 사람과 만나는 지점에 관심이 많습니다. 수련의를 위한 수술 피드백, 시각장애 아동이 비장애 친구와 함께 할 수 있는 보드게임 보조기기, 심장 MRI 시퀀스 분류를 연구하고 만들었어요.',
-        '실험실 밖에서는 대부분 극장에 있습니다. 본 공연마다 이곳에 한국어와 영어로 후기를 남겨요.',
+        '실험실 밖에서는 대부분 극장에, 그리고 그다음엔 스케치북 앞에 있습니다. 본 공연마다 한국어와 영어로 후기를 남기고, 오래 남는 공연은 그림으로 그려요.',
       ],
       education: '학력',
       experience: '경력',

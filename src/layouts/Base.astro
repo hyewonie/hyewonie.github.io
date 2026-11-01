@@ -1,7 +1,7 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
-import { t, other, url, type Lang } from '../i18n';
+import { t, other, url, instagram, type Lang } from '../i18n';
 
 interface Props {
   lang: Lang;
@@ -43,6 +43,7 @@ const alt = altHref ?? Astro.url.pathname.replace(`/${lang}/`, `/${other(lang)}/
         <p>{s.footer}</p>
         <p>
           <a href="mailto:hyewonj@andrew.cmu.edu">hyewonj@andrew.cmu.edu</a>
+          <a class="ig" href={instagram.href} target="_blank" rel="noopener">Instagram {instagram.handle}</a>
         </p>
       </div>
     </footer>
@@ -54,4 +55,5 @@ const alt = altHref ?? Astro.url.pathname.replace(`/${lang}/`, `/${other(lang)}/
   .site-footer { border-top: 1px dashed var(--rule); color: var(--ink-soft); font-size: 0.95rem; padding: 2rem 0 3rem; }
   .site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; }
   .site-footer p { margin: 0; }
+  .ig { margin-left: 1.25rem; }
 </style>

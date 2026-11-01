@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { t, formatDate, type Lang } from '../i18n';
+
+interface Props { drawing: CollectionEntry<'drawings'>; lang: Lang }
+const { drawing, lang } = Astro.props;
+const d = drawing.data;
+const s = t[lang].drawings;
+const alt = d.alt?.[lang] ?? d.title[lang];
+---
+
+<figure class="drawing">
+  <button
+    type="button"
+    class="frame"
+    data-full={d.image.src}
+    data-alt={alt}
+    data-title={d.title[lang]}
+    data-caption={d.caption[lang]}
+    aria-label={`${s.view}: ${d.title[lang]}`}
+  >
+    <Image src={d.image} alt={alt} widths={[400, 700, 1000]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 360px" />
+  </button>
+  <figcaption>
+    <p class="title">{d.title[lang]}{d.sample && <span class="sample">{s.sample}</span>}</p>
+    <p class="caption">{d.caption[lang]}</p>
+    <p class="meta">
+      <time datetime={d.date.toISOString().slice(0, 10)}>{formatDate(d.date, lang, 'short')}</time>
+      {d.show && <span>{s.from}: {d.show}</span>}
+    </p>
+  </figcaption>
+</figure>
+
+<style>
+  .drawing { margin: 0 0 2rem; break-inside: avoid; }
+  /* Matted print: the drawing sits on a paper mount with a thin forest keyline. */
+  .frame {
+    display: block; width: 100%; padding: 0.9rem; cursor: zoom-in;
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 3px;
+  }
+  .frame :global(img) { width: 100%; height: auto; outline: 1px solid var(--curtain); outline-offset: -1px; }
+  .frame:hover { border-color: var(--signal); }
+  figcaption { padding: 0.8rem 0.2rem 0; }
+  figcaption p { margin: 0; }
+  .title { font-family: var(--display); font-weight: 700; font-size: 1.15rem; }
+  .sample { margin-left: 0.6rem; padding: 0.05rem 0.4rem; border: 1px dashed var(--ink-soft); border-radius: 2px; font: 400 0.72rem var(--body); color: var(--ink-soft); vertical-align: middle; }
+  .caption { color: var(--ink-soft); font-size: 0.97rem; margin-top: 0.3rem !important; }
+  .meta { display: flex; flex-wrap: wrap; gap: 0.2rem 1rem; margin-top: 0.4rem !important; font-size: 0.82rem; color: var(--signal); }
+</style>

@@ -10,6 +10,7 @@ const items = [
   { href: url(`${lang}/`), label: s.nav.home, exact: true },
   { href: url(`${lang}/projects/`), label: s.nav.projects },
   { href: url(`${lang}/reviews/`), label: s.nav.reviews },
+  { href: url(`${lang}/drawings/`), label: s.nav.drawings },
   { href: url(`${lang}/about/`), label: s.nav.about },
 ];
 const isCurrent = (i: (typeof items)[number]) => (i.exact ? path === i.href : path.startsWith(i.href));
