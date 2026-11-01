@@ -43,7 +43,7 @@ const drawings = defineCollection({
     z.object({
       image: image(),
       title: bilingual,
-      caption: bilingual,
+      caption: bilingual.optional(),
       alt: bilingual.optional(),
       date: z.coerce.date(),
       show: z.string().optional(),

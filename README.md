@@ -43,7 +43,7 @@ npm run build    # dist/ 에 정적 파일 생성
    title:
      en: Orpheus, act two
      ko: 2막의 오르페우스
-   caption:
+   caption:                   # 선택: 그림 설명. 없으면 caption 세 줄 삭제
      en: One or two sentences about the drawing.
      ko: 그림에 대한 한두 문장.
    alt:                       # 선택: 화면 낭독기용 그림 설명

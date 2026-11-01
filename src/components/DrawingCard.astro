@@ -17,14 +17,14 @@ const alt = d.alt?.[lang] ?? d.title[lang];
     data-full={d.image.src}
     data-alt={alt}
     data-title={d.title[lang]}
-    data-caption={d.caption[lang]}
+    data-caption={d.caption?.[lang] ?? ''}
     aria-label={`${s.view}: ${d.title[lang]}`}
   >
     <Image src={d.image} alt={alt} widths={[400, 700, 1000]} sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 360px" />
   </button>
   <figcaption>
     <p class="title">{d.title[lang]}{d.sample && <span class="sample">{s.sample}</span>}</p>
-    <p class="caption">{d.caption[lang]}</p>
+    {d.caption && <p class="caption">{d.caption[lang]}</p>}
     <p class="meta">
       <time datetime={d.date.toISOString().slice(0, 10)}>{formatDate(d.date, lang, 'short')}</time>
       {d.show && <span>{s.from}: {d.show}</span>}
