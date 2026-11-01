@@ -34,11 +34,11 @@ export const t = {
     switchLabel: 'Read this page in Korean',
     hero: {
       admit: 'Admit one',
-      line: 'Builds things that see, sense, and explain. Spends the evenings in row G, watching other people tell stories.',
+      line: 'Builds things that see, sense, and explain. Likes to spend my free time at a theater.',
       fields: [
         ['Program', 'MS, Electrical & Computer Engineering'],
-        ['Venue', 'Carnegie Mellon University'],
-        ['Run', 'Aug 2026 – Dec 2027'],
+        ['School', 'Carnegie Mellon University'],
+        ['Duration', 'Aug 2026 – Dec 2027'],
       ],
       stub: ['ECE', 'MS', "'27"],
       stubLabels: ['Dept', 'Prog', 'Class'],
@@ -100,7 +100,8 @@ export const t = {
       intro: [
         "I'm Hyewon, a first-year master's student in Electrical and Computer Engineering at Carnegie Mellon. Before Pittsburgh I spent four years at Johns Hopkins studying electrical engineering and computer science.",
         'My work sits where computer vision meets people: feedback for surgeons-in-training, a board game that children with visual impairments can play with sighted friends, and MRI sequence classification for cardiac imaging.',
-        'Off the bench I am usually at the theatre, and afterwards at my sketchbook. I keep a review for every show here, in English and Korean, and post drawings of the ones that stay with me.',
+        'Off the bench I am usually at the theatre. I keep a review for shows that I saw and liked, in English and Korean.',
+        'I also draw the things I love, which is usually theatre too. You can find them on the Drawings page and on Instagram.',
       ],
       education: 'Education',
       experience: 'Work',
@@ -118,11 +119,11 @@ export const t = {
     switchLabel: '이 페이지를 영어로 보기',
     hero: {
       admit: '입장권 1매',
-      line: '보고, 감지하고, 설명하는 시스템을 만듭니다. 저녁이면 객석 G열에 앉아 남의 이야기를 듣습니다.',
+      line: '보고, 감지하고, 설명하는 시스템을 만듭니다. 여가 시간에는 연극 및 뮤지컬을 봅니다.',
       fields: [
         ['과정', '전기·컴퓨터공학 석사 (MS ECE)'],
         ['장소', '카네기멜론 대학교'],
-        ['공연 기간', '2026년 8월 – 2027년 12월'],
+        ['기간', '2026년 8월 – 2027년 12월'],
       ],
       stub: ['ECE', 'MS', "'27"],
       stubLabels: ['학과', '과정', '졸업'],
@@ -132,7 +133,7 @@ export const t = {
     actOneLede: '컴퓨터 비전, 의료 영상, 접근성 하드웨어에 관한 연구와 프로젝트.',
     actTwo: '2막',
     actTwoTitle: '객석에서',
-    actTwoLede: '보고 온 연극과 뮤지컬에 대한 기록. 공연 당일 밤이나 다음 날 아침에 씁니다.',
+    actTwoLede: '보고 온 연극과 뮤지컬에 대한 기록.',
     intermission: '인터미션',
     intermissionTitle: '스케치북 속',
     intermissionLede: '좋아하는 걸 그립니다. 대개는 지난주 무대 위에 있던 것들이에요.',
@@ -184,7 +185,8 @@ export const t = {
       intro: [
         '카네기멜론 대학교 전기·컴퓨터공학(ECE) 석사 1년차 정혜원입니다. 피츠버그에 오기 전에는 존스홉킨스 대학교에서 전기공학과 컴퓨터과학을 공부했어요.',
         '컴퓨터 비전이 사람과 만나는 지점에 관심이 많습니다. 수련의를 위한 수술 피드백, 시각장애 아동이 비장애 친구와 함께 할 수 있는 보드게임 보조기기, 심장 MRI 시퀀스 분류를 연구하고 만들었어요.',
-        '실험실 밖에서는 대부분 극장에, 그리고 그다음엔 스케치북 앞에 있습니다. 본 공연마다 한국어와 영어로 후기를 남기고, 오래 남는 공연은 그림으로 그려요.',
+        '실험실 밖에서는 대부분 극장에 있습니다 (물리적이든 심적이든...). 마음에 드는 공연에 대한 후기를 여기에 남깁니다.',
+        '좋아하는 것들을 그림으로도 그려요. 대부분 이것도 공연이에요. 그림 페이지와 인스타그램에서 볼 수 있어요.',
       ],
       education: '학력',
       experience: '경력',
