@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import { langs, t, url, splitId, type Lang } from '../../../i18n';
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const s = t[lang].projects;
+const projects = (await getCollection('projects', (p) => splitId(p.id).lang === lang))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base lang={lang} title={s.title}>
+  <div class="wrap">
+    <header class="head">
+      <h1>{s.title}</h1>
+      <p class="lede">{s.lede}</p>
+    </header>
+
+    <div class="sheets">
+      {projects.map((p) => (
+        <article class="sheet">
+          <div class="meta">
+            <p class="org">{p.data.org}</p>
+            <p>{p.data.role}</p>
+            <p class="period">{p.data.period}</p>
+          </div>
+          <div class="text">
+            <h2><a href={url(`${lang}/projects/${splitId(p.id).slug}/`)}>{p.data.title}</a></h2>
+            <p>{p.data.summary}</p>
+            {p.data.highlight && <p class="highlight">{p.data.highlight}</p>}
+            <ul class="tags">{p.data.tags.map((tag) => <li>{tag}</li>)}</ul>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head { padding: clamp(2rem, 6vw, 4rem) 0 2rem; }
+  h1 { margin-bottom: 1rem; }
+  .sheets { display: grid; gap: 1.5rem; }
+  /* A datasheet: hairline grid background, like engineering paper. */
+  .sheet {
+    position: relative; display: grid; grid-template-columns: 14rem 1fr; gap: 1rem 2.5rem;
+    padding: 1.75rem; border: 1px solid var(--rule); border-left: 5px solid var(--signal); border-radius: 4px;
+    background:
+      repeating-linear-gradient(0deg, color-mix(in srgb, var(--signal) 6%, transparent) 0 1px, transparent 1px 22px),
+      repeating-linear-gradient(90deg, color-mix(in srgb, var(--signal) 6%, transparent) 0 1px, transparent 1px 22px),
+      var(--bg);
+  }
+  .sheet:focus-within { outline: 2px solid var(--signal); outline-offset: 3px; }
+  .meta p { margin: 0 0 0.3rem; color: var(--ink-soft); font-size: 0.95rem; }
+  .meta .org { color: var(--ink); font-weight: 600; }
+  .period { font-family: var(--mono); font-size: 0.85rem !important; }
+  h2 { font-size: 1.6rem; margin-bottom: 0.6rem; }
+  h2 a { text-decoration: none; }
+  h2 a::after { content: ''; position: absolute; inset: 0; }
+  h2 a:focus-visible { outline: none; }
+  .text p { max-width: 62ch; }
+  .highlight { color: var(--signal); font-weight: 500; }
+  @media (max-width: 700px) { .sheet { grid-template-columns: 1fr; } }
+</style>

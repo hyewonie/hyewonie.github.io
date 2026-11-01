@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import TicketStub from '../../../components/TicketStub.astro';
+import { langs, t, splitId, type Lang } from '../../../i18n';
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const s = t[lang].reviews;
+
+const reviews = (await getCollection('reviews', (r) => splitId(r.id).lang === lang))
+  .sort((a, b) => b.data.seen.valueOf() - a.data.seen.valueOf());
+
+// Group by the year the show was seen; newest season first.
+const seasons = [...new Set(reviews.map((r) => r.data.seen.getUTCFullYear()))]
+  .map((year) => ({ year, items: reviews.filter((r) => r.data.seen.getUTCFullYear() === year) }));
+
+const filters = [
+  { value: 'all', label: s.all },
+  { value: 'musical', label: s.musical },
+  { value: 'play', label: s.play },
+];
+---
+
+<Base lang={lang} title={s.title}>
+  <div class="wrap">
+    <header class="head">
+      <h1>{s.title}</h1>
+      <p class="lede">{s.lede}</p>
+      <div class="filters" role="group" aria-label={s.title}>
+        {filters.map((f, i) => (
+          <button type="button" data-filter={f.value} aria-pressed={i === 0 ? 'true' : 'false'}>{f.label}</button>
+        ))}
+      </div>
+    </header>
+
+    {seasons.map(({ year, items }) => (
+      <section class="season" data-season>
+        <h2>{year}</h2>
+        <div class="stubs">{items.map((r) => <TicketStub review={r} />)}</div>
+      </section>
+    ))}
+    <p class="empty" hidden>{s.empty}</p>
+  </div>
+</Base>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]');
+  const empty = document.querySelector<HTMLElement>('.empty')!;
+  buttons.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const f = btn.dataset.filter;
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let shown = 0;
+      document.querySelectorAll<HTMLElement>('[data-season]').forEach((season) => {
+        let inSeason = 0;
+        season.querySelectorAll<HTMLElement>('[data-kind]').forEach((stub) => {
+          const match = f === 'all' || stub.dataset.kind === f;
+          stub.hidden = !match;
+          if (match) inSeason++;
+        });
+        season.hidden = inSeason === 0;
+        shown += inSeason;
+      });
+      empty.hidden = shown > 0;
+    }),
+  );
+</script>
+
+<style>
+  .head { padding: clamp(2rem, 6vw, 4rem) 0 1rem; }
+  h1 { margin-bottom: 1rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem; }
+  .filters button {
+    font: 500 0.95rem var(--body); color: var(--ink); background: transparent;
+    border: 1.5px solid var(--rule); border-radius: 999px; padding: 0.4rem 1rem; cursor: pointer;
+  }
+  .filters button:hover { border-color: var(--curtain); }
+  .filters button[aria-pressed='true'] { background: var(--curtain); border-color: var(--curtain); color: var(--bg); }
+  .season { margin-top: 3rem; }
+  .season h2 { font-size: 1.4rem; font-style: italic; color: var(--ink-soft); margin-bottom: 1rem; }
+  .stubs { display: grid; gap: 1.1rem; }
+  .empty { margin-top: 3rem; color: var(--ink-soft); }
+</style>

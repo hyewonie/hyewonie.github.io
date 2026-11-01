@@ -1,0 +1,15 @@
+---
+interface Props { rating: number; label: string }
+const { rating, label } = Astro.props;
+---
+
+<span class="stars" role="img" aria-label={label}>
+  <span class="off" aria-hidden="true">★★★★★</span>
+  <span class="on" aria-hidden="true" style={`width:${(rating / 5) * 100}%`}>★★★★★</span>
+</span>
+
+<style>
+  .stars { position: relative; display: inline-block; line-height: 1; letter-spacing: 0.08em; font-size: 1.05em; }
+  .off { color: var(--rule); }
+  .on { position: absolute; inset: 0 auto 0 0; overflow: hidden; white-space: nowrap; color: var(--brass); }
+</style>

@@ -1,0 +1,61 @@
+---
+import { t, other, url, type Lang } from '../i18n';
+
+interface Props { lang: Lang; altHref: string }
+const { lang, altHref } = Astro.props;
+const s = t[lang];
+const path = Astro.url.pathname;
+
+const items = [
+  { href: url(`${lang}/`), label: s.nav.home, exact: true },
+  { href: url(`${lang}/projects/`), label: s.nav.projects },
+  { href: url(`${lang}/reviews/`), label: s.nav.reviews },
+  { href: url(`${lang}/about/`), label: s.nav.about },
+];
+const isCurrent = (i: (typeof items)[number]) => (i.exact ? path === i.href : path.startsWith(i.href));
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="mark" href={url(`${lang}/`)}>{s.name}</a>
+    <nav aria-label="Main">
+      <ul>
+        {items.map((i) => (
+          <li><a href={i.href} aria-current={isCurrent(i) ? 'page' : undefined}>{i.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a class="lang" href={altHref} hreflang={other(lang)} lang={other(lang)} data-lang={other(lang)} aria-label={s.switchLabel}>
+      {s.switchTo}
+    </a>
+  </div>
+</header>
+
+<script>
+  // Remember the reader's language so the root page sends them back to it next time.
+  document.querySelectorAll<HTMLAnchorElement>('a.lang').forEach((a) =>
+    a.addEventListener('click', () => {
+      try { localStorage.setItem('lang', a.dataset.lang ?? 'en'); } catch {}
+    }),
+  );
+</script>
+
+<style>
+  .site-header { border-bottom: 1px dashed var(--rule); }
+  .bar { display: flex; align-items: center; gap: 1.5rem; min-height: 4.25rem; flex-wrap: wrap; padding-block: 0.6rem; }
+  .mark { font-family: var(--display); font-size: 1.35rem; font-weight: 600; text-decoration: none; margin-right: auto; }
+  ul { display: flex; gap: 1.25rem; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+  nav a { text-decoration: none; color: var(--ink-soft); font-weight: 500; padding-block: 0.3rem; }
+  nav a:hover { color: var(--ink); }
+  nav a[aria-current='page'] { color: var(--ink); box-shadow: inset 0 -2px 0 var(--curtain); }
+  .lang {
+    font-weight: 600; font-size: 0.9rem; text-decoration: none;
+    padding: 0.35rem 0.8rem; border: 1.5px solid var(--curtain); color: var(--curtain); border-radius: 999px;
+  }
+  .lang:hover { background: var(--curtain); color: var(--bg); }
+  @media (max-width: 640px) {
+    .bar { gap: 0.6rem 1rem; }
+    nav { order: 3; width: 100%; }
+    ul { gap: 1rem; font-size: 0.95rem; }
+  }
+</style>

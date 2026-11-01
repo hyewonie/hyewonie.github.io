@@ -1,0 +1,90 @@
+/* Palette: lilac ticket stock, plum ink, velvet curtain, brass, solder-mask green. */
+:root {
+  --paper: #f3eef7;
+  --paper-2: #e7ddef;
+  --ink: #241a3a;
+  --ink-soft: #5a4d70;
+  --curtain: #8c1d40;
+  --brass: #b88a12;
+  --signal: #1f7a6d;
+  --rule: #cbbbd9;
+  --bg: #faf7fc;
+
+  --display: 'Bodoni Moda', 'Gowun Batang', Georgia, serif;
+  --body: 'IBM Plex Sans KR', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  --measure: 68ch;
+  --gutter: clamp(16px, 4vw, 40px);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #2b2142;
+    --paper-2: #362a52;
+    --ink: #efe8f6;
+    --ink-soft: #b9aecb;
+    --curtain: #e05a83;
+    --brass: #e2b84a;
+    --signal: #5cc4b2;
+    --rule: #4a3d66;
+    --bg: #1a1430;
+    color-scheme: dark;
+  }
+}
+
+:lang(ko) { --display: 'Gowun Batang', 'Bodoni Moda', serif; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 1.0625rem/1.65 var(--body);
+  overflow-x: hidden;
+}
+:lang(ko) body, body:lang(ko) { word-break: keep-all; }
+img, svg { max-width: 100%; display: block; }
+a { color: inherit; text-decoration-color: var(--curtain); text-underline-offset: 0.2em; }
+a:hover { color: var(--curtain); }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 2px; }
+
+h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.1; margin: 0; }
+h1 { font-size: clamp(2.6rem, 7vw, 5.2rem); letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+h3 { font-size: 1.35rem; }
+p { margin: 0 0 1em; }
+
+.wrap { width: min(1120px, 100%); margin-inline: auto; padding-inline: var(--gutter); }
+.measure { max-width: var(--measure); }
+.lede { color: var(--ink-soft); font-size: 1.125rem; max-width: 56ch; }
+[hidden] { display: none !important; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Section heading for the two "acts": act number sits in the margin like a playbill. */
+.act { display: grid; grid-template-columns: 6rem 1fr; gap: 0 1.5rem; align-items: baseline; margin: 5rem 0 2rem; }
+.act-no { font-family: var(--display); font-style: italic; color: var(--curtain); font-size: 1.25rem; }
+.act .lede { grid-column: 2; margin-top: 0.5rem; }
+@media (max-width: 640px) {
+  .act { grid-template-columns: 1fr; }
+  .act .lede { grid-column: 1; }
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0; margin: 0; list-style: none; }
+.tags li { font: 500 0.78rem/1 var(--mono); padding: 0.35rem 0.55rem; border: 1px solid var(--signal); color: var(--signal); border-radius: 2px; }
+
+.text-link { font-weight: 500; }
+
+/* Long-form prose (reviews and project write-ups). */
+.prose { max-width: var(--measure); font-size: 1.125rem; line-height: 1.75; }
+.prose h2 { font-size: 1.6rem; margin: 2.2rem 0 0.8rem; }
+.prose h3 { margin: 1.8rem 0 0.6rem; }
+.prose blockquote { margin: 1.8rem 0; padding-left: 1.2rem; border-left: 3px solid var(--curtain); font-family: var(--display); font-size: 1.3rem; font-style: italic; color: var(--ink-soft); }
+.prose img { border-radius: 4px; margin: 1.5rem 0; }
+.prose ul { padding-left: 1.2rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

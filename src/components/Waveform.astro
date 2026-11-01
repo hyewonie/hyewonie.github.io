@@ -1,0 +1,31 @@
+---
+// The ticket's "barcode": a clocked digital signal that relaxes into an analog wave.
+// Left half is the engineer, right half is the theatre.
+interface Props { animate?: boolean }
+const { animate = false } = Astro.props;
+
+const W = 600, H = 56, mid = H / 2, amp = 20;
+const bits = [1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1];
+const step = W / 2 / bits.length;
+let d = `M0 ${mid + amp}`;
+bits.forEach((b, i) => {
+  const y = b ? mid - amp : mid + amp;
+  d += ` V${y} H${(i + 1) * step}`;
+});
+for (let x = W / 2; x <= W; x += 3) {
+  const p = (x - W / 2) / (W / 2);
+  d += ` L${x.toFixed(1)} ${(mid - amp * Math.cos(p * Math.PI * 7) * (1 - 0.35 * p)).toFixed(1)}`;
+}
+---
+
+<svg class:list={['wave', { animate }]} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" aria-hidden="true">
+  <path d={d} pathLength="1" />
+</svg>
+
+<style>
+  .wave { width: 100%; height: 56px; overflow: visible; }
+  path { fill: none; stroke: var(--signal); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+  .animate path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: trace 2.4s 0.3s cubic-bezier(0.6, 0, 0.3, 1) forwards; }
+  @keyframes trace { to { stroke-dashoffset: 0; } }
+  @media (prefers-reduced-motion: reduce) { .animate path { stroke-dashoffset: 0; } }
+</style>

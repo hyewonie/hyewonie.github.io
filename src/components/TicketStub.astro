@@ -1,0 +1,61 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Stars from './Stars.astro';
+import { t, url, splitId, formatDate } from '../i18n';
+
+interface Props { review: CollectionEntry<'reviews'> }
+const { review } = Astro.props;
+const { lang, slug } = splitId(review.id);
+const s = t[lang].reviews;
+const r = review.data;
+---
+
+<article class="stub" data-kind={r.kind}>
+  <div class="main">
+    <p class="kind">{s.kind[r.kind]}{r.sample && <span class="sample">{lang === 'ko' ? '샘플' : 'Sample'}</span>}</p>
+    <h3><a href={url(`${lang}/reviews/${slug}/`)}>{r.title}</a></h3>
+    <p class="summary">{r.summary}</p>
+  </div>
+  <dl class="tear">
+    <div><dt>{s.seen}</dt><dd><time datetime={r.seen.toISOString().slice(0, 10)}>{formatDate(r.seen, lang, 'short')}</time></dd></div>
+    <div><dt>{s.venue}</dt><dd>{r.venue}</dd></div>
+    <div><dt class="visually-hidden">{s.rating}</dt><dd><Stars rating={r.rating} label={`${r.rating} ${s.outOf}`} /></dd></div>
+  </dl>
+</article>
+
+<style>
+  /* Ticket silhouette: semicircle notches punched at the perforation line. */
+  .stub {
+    --notch: 11px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 11.5rem;
+    background: var(--paper);
+    border-radius: 6px;
+    -webkit-mask: radial-gradient(circle var(--notch) at calc(100% - 11.5rem) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--notch) at calc(100% - 11.5rem) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+    mask: radial-gradient(circle var(--notch) at calc(100% - 11.5rem) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle var(--notch) at calc(100% - 11.5rem) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  }
+  .stub:focus-within { outline: 2px solid var(--signal); outline-offset: 3px; }
+  .main { padding: 1.3rem 1.5rem 1.4rem; border-left: 5px solid var(--curtain); border-radius: 6px 0 0 6px; }
+  .kind { font-size: 0.85rem; font-weight: 600; color: var(--curtain); margin: 0 0 0.35rem; }
+  .sample { color: var(--ink-soft); font-weight: 400; margin-left: 0.6rem; padding: 0.05rem 0.4rem; border: 1px dashed var(--ink-soft); border-radius: 2px; font-size: 0.75rem; }
+  h3 { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  h3 a { text-decoration: none; }
+  h3 a::after { content: ''; position: absolute; inset: 0; } /* whole ticket is clickable */
+  h3 a:focus-visible { outline: none; }
+  .summary { color: var(--ink-soft); margin: 0; font-size: 0.98rem; }
+  .tear {
+    margin: 0; padding: 1.1rem 1.2rem; border-left: 2px dashed var(--rule);
+    display: grid; align-content: center; gap: 0.55rem; background: var(--paper-2);
+    font-size: 0.85rem;
+  }
+  .tear div { display: grid; gap: 0.05rem; }
+  dt { color: var(--ink-soft); font-size: 0.75rem; }
+  dd { margin: 0; font-family: var(--mono); font-size: 0.82rem; }
+  @media (max-width: 560px) {
+    .stub { grid-template-columns: 1fr; -webkit-mask: none; mask: none; }
+    .tear { border-left: none; border-top: 2px dashed var(--rule); grid-template-columns: repeat(3, auto); justify-content: start; gap: 1.2rem; border-radius: 0 0 6px 0; }
+  }
+</style>

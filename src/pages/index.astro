@@ -1,0 +1,26 @@
+---
+import { url } from '../i18n';
+const en = url('en/');
+const ko = url('ko/');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hyewon Jung</title>
+    <link rel="icon" type="image/svg+xml" href={url('favicon.svg')} />
+    <script is:inline define:vars={{ en, ko }}>
+      // Send readers to the language they picked last time, else to their browser's language.
+      let lang = null;
+      try { lang = localStorage.getItem('lang'); } catch {}
+      if (!lang) lang = (navigator.language || '').toLowerCase().startsWith('ko') ? 'ko' : 'en';
+      location.replace(lang === 'ko' ? ko : en);
+    </script>
+    <noscript><meta http-equiv="refresh" content={`0; url=${en}`} /></noscript>
+  </head>
+  <body style="background:#faf7fc;color:#241a3a;font-family:system-ui,sans-serif;padding:2rem">
+    <p><a href={en}>English</a> · <a href={ko}>한국어</a></p>
+  </body>
+</html>

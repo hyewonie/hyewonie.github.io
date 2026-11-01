@@ -1,0 +1,131 @@
+---
+import Base from '../../layouts/Base.astro';
+import Waveform from '../../components/Waveform.astro';
+import { langs, t, url, type Lang } from '../../i18n';
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const s = t[lang].about;
+const ko = lang === 'ko';
+
+const education = [
+  {
+    school: ko ? '카네기멜론 대학교, 공과대학' : 'Carnegie Mellon University, College of Engineering',
+    degree: ko ? '전기·컴퓨터공학 석사' : 'MS, Electrical and Computer Engineering',
+    when: ko ? '2026.08 – 2027.12' : 'Aug 2026 – Dec 2027',
+    note: ko ? '수강 중: Foundations of Computer Systems' : 'Now taking Foundations of Computer Systems',
+  },
+  {
+    school: ko ? '존스홉킨스 대학교, Whiting 공과대학' : 'Johns Hopkins University, Whiting School of Engineering',
+    degree: ko ? '전기공학·컴퓨터과학 학사, GPA 3.91' : 'BS, Electrical Engineering and Computer Science, GPA 3.91',
+    when: ko ? '2022.08 – 2026.05' : 'Aug 2022 – May 2026',
+    note: ko ? "전 학기 Dean's List" : "Dean's List every semester, Fall 2022 – Spring 2026",
+  },
+];
+
+const work = [
+  {
+    title: ko ? '랩 어시스턴트, JHU 전기·컴퓨터공학과' : 'Lab Assistant, JHU Electrical & Computer Engineering',
+    when: ko ? '2024.01 – 2026.02' : 'Jan 2024 – Feb 2026',
+    note: ko
+      ? '학부·대학원 실험 장비 수리와 교정, 비품 관리, Gateway: Python 및 Mastering Electronics 오피스아워 보조.'
+      : 'Repaired and calibrated lab equipment for undergraduate and graduate courses, ran the stockroom, and helped students debug code and circuits in office hours.',
+  },
+  {
+    title: ko ? '기술 통역 인턴, 한국혁신센터 워싱턴DC (KIC DC)' : 'Technical Translator Intern, Korea Innovation Center DC',
+    when: ko ? '2025.05 – 2025.07' : 'May – Jul 2025',
+    note: ko
+      ? 'UC 버클리 하스 경영대학원에서 한국 스타트업 28팀과 비즈니스 멘토 사이의 기술·비즈니스 통역.'
+      : 'Interpreted between 28 Korean startup teams and business mentors at UC Berkeley Haas, across both technical and business conversations.',
+  },
+];
+
+const skills = [
+  { k: ko ? '언어' : 'Languages', v: ['Python', 'C', 'C++', 'Java'] },
+  { k: ko ? '라이브러리' : 'Libraries', v: ['PyTorch', 'scikit-learn', 'OpenCV', 'NumPy', 'Pandas', 'Matplotlib'] },
+  { k: ko ? '도구' : 'Tools', v: ['Git', 'Vivado', 'MATLAB', 'Visual Studio', 'IntelliJ IDEA', 'Google Colab', 'Cursor'] },
+  { k: ko ? '말' : 'Spoken', v: ko ? ['한국어', '영어'] : ['Korean', 'English'] },
+];
+---
+
+<Base lang={lang} title={s.title}>
+  <div class="wrap">
+    <header class="head">
+      <h1>{s.title}</h1>
+      <div class="intro">
+        {s.intro.map((para) => <p>{para}</p>)}
+      </div>
+      <Waveform />
+    </header>
+
+    <div class="grid">
+      <section aria-labelledby="edu">
+        <h2 id="edu">{s.education}</h2>
+        <ol class="timeline">
+          {education.map((e) => (
+            <li>
+              <p class="when">{e.when}</p>
+              <h3>{e.school}</h3>
+              <p>{e.degree}</p>
+              <p class="note">{e.note}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="work">
+        <h2 id="work">{s.experience}</h2>
+        <ol class="timeline">
+          {work.map((w) => (
+            <li>
+              <p class="when">{w.when}</p>
+              <h3>{w.title}</h3>
+              <p class="note">{w.note}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="skills">
+        <h2 id="skills">{s.skills}</h2>
+        <dl class="skills">
+          {skills.map((g) => (
+            <div><dt>{g.k}</dt><dd><ul class="tags">{g.v.map((x) => <li>{x}</li>)}</ul></dd></div>
+          ))}
+        </dl>
+      </section>
+
+      <section aria-labelledby="contact" class="contact">
+        <h2 id="contact">{s.contact}</h2>
+        <p><span class="label">{s.email}</span> <a href="mailto:hyewonj@andrew.cmu.edu">hyewonj@andrew.cmu.edu</a></p>
+        <p><a class="resume" href={url('Hyewon_Jung_Resume.pdf')} download>{s.resume}</a></p>
+      </section>
+    </div>
+  </div>
+</Base>
+
+<style>
+  .head { padding: clamp(2rem, 6vw, 4rem) 0 1rem; }
+  h1 { margin-bottom: 1.5rem; }
+  .intro { max-width: 62ch; font-size: 1.2rem; margin-bottom: 2rem; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem 4rem; margin-top: 3rem; }
+  h2 { font-size: 1.7rem; margin-bottom: 1.25rem; }
+  .timeline { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--rule); }
+  .timeline li { position: relative; padding: 0 0 1.75rem 1.4rem; }
+  .timeline li::before { content: ''; position: absolute; left: -7px; top: 0.45rem; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--curtain); }
+  .timeline h3 { font-family: var(--body); font-size: 1.05rem; font-weight: 600; line-height: 1.4; margin-bottom: 0.2rem; }
+  .timeline p { margin: 0; }
+  .when { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 0.2rem !important; }
+  .note { color: var(--ink-soft); font-size: 0.97rem; margin-top: 0.25rem !important; }
+  .skills { margin: 0; display: grid; gap: 1rem; }
+  .skills dt { font-size: 0.85rem; color: var(--ink-soft); margin-bottom: 0.35rem; }
+  .skills dd { margin: 0; }
+  .label { color: var(--ink-soft); margin-right: 0.5rem; }
+  .resume {
+    display: inline-block; margin-top: 0.5rem; padding: 0.7rem 1.3rem; border-radius: 999px;
+    background: var(--curtain); color: var(--bg); text-decoration: none; font-weight: 600;
+  }
+  .resume:hover { color: var(--bg); filter: brightness(1.1); }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+</style>

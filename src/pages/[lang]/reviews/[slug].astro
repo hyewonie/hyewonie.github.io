@@ -1,0 +1,85 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Stars from '../../../components/Stars.astro';
+import { t, other, url, splitId, formatDate, type Lang } from '../../../i18n';
+
+export async function getStaticPaths() {
+  const all = await getCollection('reviews');
+  const ids = new Set(all.map((r) => r.id));
+  return all.map((review) => {
+    const { lang, slug } = splitId(review.id);
+    const translated = ids.has(`${other(lang)}/${slug}`);
+    return { params: { lang, slug }, props: { review, translated } };
+  });
+}
+
+interface Props { review: CollectionEntry<'reviews'>; translated: boolean }
+const { review, translated } = Astro.props;
+const lang = Astro.params.lang as Lang;
+const s = t[lang].reviews;
+const r = review.data;
+const { Content } = await render(review);
+
+// No translation yet: the toggle lands on the other language's review list instead of a 404.
+const altHref = translated
+  ? url(`${other(lang)}/reviews/${Astro.params.slug}/`)
+  : url(`${other(lang)}/reviews/`);
+---
+
+<Base lang={lang} title={r.title} description={r.summary} altHref={altHref}>
+  <article class="wrap playbill">
+    <header class="cover">
+      <p class="kind">{s.kind[r.kind]}</p>
+      <h1>{r.title}</h1>
+      <p class="summary">{r.summary}</p>
+      <Stars rating={r.rating} label={`${r.rating} ${s.outOf}`} />
+    </header>
+
+    <div class="body">
+      <dl class="spec">
+        <div><dt>{s.seen}</dt><dd><time datetime={r.seen.toISOString().slice(0, 10)}>{formatDate(r.seen, lang)}</time></dd></div>
+        <div><dt>{s.venue}</dt><dd>{r.venue}<br /><span class="city">{r.city}</span></dd></div>
+        {r.seat && <div><dt>{s.seat}</dt><dd>{r.seat}</dd></div>}
+        {r.cast.length > 0 && <div><dt>{s.cast}</dt><dd><ul>{r.cast.map((c) => <li>{c}</li>)}</ul></dd></div>}
+      </dl>
+
+      <div class="prose">
+        {r.sample && <p class="sample-note">{s.sample}</p>}
+        <Content />
+        {r.tags.length > 0 && <ul class="tags">{r.tags.map((tag) => <li>{tag}</li>)}</ul>}
+      </div>
+    </div>
+
+    <p class="back"><a class="text-link" href={url(`${lang}/reviews/`)}>{s.back}</a></p>
+  </article>
+</Base>
+
+<style>
+  .cover {
+    margin-top: clamp(1.5rem, 5vw, 3.5rem); padding: clamp(1.75rem, 6vw, 4rem);
+    background: var(--curtain); color: #fbf3f6; border-radius: 6px;
+    background-image: repeating-linear-gradient(90deg, #0000 0 22px, #00000014 22px 24px);
+  }
+  .cover .kind { font-family: var(--display); font-style: italic; font-size: 1.15rem; opacity: 0.85; margin-bottom: 0.5rem; }
+  .cover h1 { margin-bottom: 1rem; }
+  .cover .summary { font-size: 1.2rem; max-width: 46ch; margin-bottom: 1.25rem; }
+  .cover :global(.stars) { font-size: 1.35rem; }
+  .cover :global(.stars .off) { color: #ffffff40; }
+  .cover :global(.stars .on) { color: #f2cf6b; }
+
+  .body { display: grid; grid-template-columns: 15rem 1fr; gap: 3rem; margin-top: 3rem; }
+  .spec { margin: 0; align-self: start; position: sticky; top: 1.5rem; border-top: 3px double var(--rule); padding-top: 1rem; display: grid; gap: 1.1rem; }
+  .spec dt { font-size: 0.78rem; color: var(--ink-soft); }
+  .spec dd { margin: 0.15rem 0 0; font-weight: 500; }
+  .spec ul { list-style: none; margin: 0; padding: 0; }
+  .city { color: var(--ink-soft); font-weight: 400; }
+  .sample-note { font-size: 0.95rem; padding: 0.75rem 1rem; border: 1px dashed var(--curtain); color: var(--curtain); border-radius: 4px; }
+  .prose .tags { margin-top: 2.5rem; }
+  .back { margin-top: 4rem; }
+
+  @media (max-width: 760px) {
+    .body { grid-template-columns: 1fr; gap: 2rem; }
+    .spec { position: static; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
+  }
+</style>

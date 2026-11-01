@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Waveform from '../../components/Waveform.astro';
+import TicketStub from '../../components/TicketStub.astro';
+import { langs, t, url, splitId, type Lang } from '../../i18n';
+
+export const getStaticPaths = () => langs.map((lang) => ({ params: { lang } }));
+
+const lang = Astro.params.lang as Lang;
+const s = t[lang];
+
+const projects = (await getCollection('projects', (p) => splitId(p.id).lang === lang))
+  .sort((a, b) => a.data.order - b.data.order);
+const reviews = (await getCollection('reviews', (r) => splitId(r.id).lang === lang))
+  .sort((a, b) => b.data.seen.valueOf() - a.data.seen.valueOf())
+  .slice(0, 3);
+---
+
+<Base lang={lang}>
+  <section class="wrap hero">
+    <div class="ticket">
+      <div class="face">
+        <p class="admit">{s.hero.admit}</p>
+        <h1>{s.name}</h1>
+        <p class="line">{s.hero.line}</p>
+        <dl class="fields">
+          {s.hero.fields.map(([k, v]) => (<div><dt>{k}</dt><dd>{v}</dd></div>))}
+        </dl>
+        <Waveform animate />
+      </div>
+      <dl class="stubside">
+        {s.hero.stub.map((v, i) => (<div><dt>{s.hero.stubLabels[i]}</dt><dd>{v}</dd></div>))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="act1">
+    <header class="act">
+      <span class="act-no">{s.actOne}</span>
+      <h2 id="act1">{s.actOneTitle}</h2>
+      <p class="lede">{s.actOneLede}</p>
+    </header>
+    <ol class="program">
+      {projects.map((p) => (
+        <li>
+          <span class="period">{p.data.period}</span>
+          <div>
+            <h3><a href={url(`${lang}/projects/${splitId(p.id).slug}/`)}>{p.data.title}</a></h3>
+            <p>{p.data.summary}</p>
+            {p.data.highlight && <p class="highlight">{p.data.highlight}</p>}
+          </div>
+        </li>
+      ))}
+    </ol>
+    <p><a class="text-link" href={url(`${lang}/projects/`)}>{s.allProjects}</a></p>
+  </section>
+
+  <section class="wrap" aria-labelledby="act2">
+    <header class="act">
+      <span class="act-no">{s.actTwo}</span>
+      <h2 id="act2">{s.actTwoTitle}</h2>
+      <p class="lede">{s.actTwoLede}</p>
+    </header>
+    <div class="stubs">
+      {reviews.map((r) => <TicketStub review={r} />)}
+    </div>
+    <p><a class="text-link" href={url(`${lang}/reviews/`)}>{s.allReviews}</a></p>
+  </section>
+</Base>
+
+<style>
+  .hero { padding-top: clamp(2rem, 6vw, 4.5rem); }
+  .ticket {
+    display: grid; grid-template-columns: 1fr 7.5rem;
+    background: var(--paper); border-radius: 10px;
+    box-shadow: 0 1px 0 var(--rule), 0 24px 48px -32px color-mix(in srgb, var(--curtain) 60%, transparent);
+    -webkit-mask: radial-gradient(circle 16px at calc(100% - 7.5rem) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle 16px at calc(100% - 7.5rem) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+    mask: radial-gradient(circle 16px at calc(100% - 7.5rem) 0, #0000 98%, #000) top / 100% 51% no-repeat,
+      radial-gradient(circle 16px at calc(100% - 7.5rem) 100%, #0000 98%, #000) bottom / 100% 51% no-repeat;
+  }
+  .face { padding: clamp(1.5rem, 5vw, 3.5rem); border-top: 8px solid var(--curtain); border-radius: 10px 0 0 0; min-width: 0; }
+  .admit { font-family: var(--display); font-style: italic; color: var(--curtain); font-size: 1.15rem; margin-bottom: 0.4rem; }
+  h1 { margin-bottom: 1.2rem; }
+  .line { font-size: clamp(1.1rem, 2.2vw, 1.3rem); max-width: 40ch; margin-bottom: 2rem; }
+  .fields { display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; margin: 0 0 1.75rem; }
+  .fields dt, .stubside dt { font-size: 0.75rem; color: var(--ink-soft); }
+  .fields dd { margin: 0; font-weight: 500; }
+  .stubside {
+    margin: 0; border-left: 2px dashed var(--rule); background: var(--paper-2);
+    border-top: 8px solid var(--brass); border-radius: 0 10px 0 0;
+    display: grid; align-content: space-evenly; justify-items: center; text-align: center; padding: 1.5rem 0.5rem;
+  }
+  .stubside dd { margin: 0; font-family: var(--display); font-size: 1.9rem; font-weight: 600; }
+
+  .program { list-style: none; padding: 0; margin: 0 0 1.5rem; border-top: 1px solid var(--rule); }
+  .program li { display: grid; grid-template-columns: 11rem 1fr; gap: 0.4rem 1.5rem; padding: 1.4rem 0; border-bottom: 1px solid var(--rule); }
+  .period { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-soft); padding-top: 0.3rem; }
+  .program h3 { margin-bottom: 0.4rem; }
+  .program h3 a { text-decoration: none; }
+  .program h3 a:hover { text-decoration: underline; }
+  .program p { margin: 0; color: var(--ink-soft); max-width: 62ch; }
+  .program .highlight { color: var(--signal); font-weight: 500; margin-top: 0.4rem; }
+  .stubs { display: grid; gap: 1.1rem; margin-bottom: 1.5rem; }
+
+  @media (max-width: 640px) {
+    .ticket { grid-template-columns: 1fr; -webkit-mask: none; mask: none; }
+    .face { border-radius: 10px 10px 0 0; }
+    .stubside { border-left: none; border-top: 2px dashed var(--rule); border-radius: 0 0 10px 10px; grid-template-columns: repeat(3, 1fr); padding: 1rem; }
+    .program li { grid-template-columns: 1fr; }
+  }
+</style>
