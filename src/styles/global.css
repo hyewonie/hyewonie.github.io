@@ -1,14 +1,14 @@
-/* Palette: ivory programme paper, parchment tickets, wine curtain, old gold, forest PCB green. */
+/* Palette: rubber-plant greens on warm stone gray. Forest is the curtain, moss marks ECE work. */
 :root {
-  --paper: #f2eee4;
-  --paper-2: #e8e2d4;
-  --ink: #2a2824;
-  --ink-soft: #67625a;
-  --curtain: #7a1f2b;
-  --brass: #a87c12;
-  --signal: #2f6b4f;
-  --rule: #ded7ca;
-  --bg: #fbf9f4;
+  --paper: #e1dfdb;
+  --paper-2: #d5d3cd;
+  --ink: #0b1a15;
+  --ink-soft: #4a5548;
+  --curtain: #1f3628;
+  --brass: #8a6d1e;
+  --signal: #536149;
+  --rule: #c9cbc3;
+  --bg: #edece8;
 
   --display: 'Nanum Myeongjo', Georgia, serif;
   --body: 'IBM Plex Sans KR', system-ui, sans-serif;
@@ -21,15 +21,15 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --paper: #27241f;
-    --paper-2: #302c26;
-    --ink: #eee9e0;
-    --ink-soft: #b5aea2;
-    --curtain: #d9737f;
-    --brass: #d9b252;
-    --signal: #6db592;
-    --rule: #433d35;
-    --bg: #1c1a17;
+    --paper: #13261d;
+    --paper-2: #1f3628;
+    --ink: #e1dfdb;
+    --ink-soft: #a9b3a5;
+    --curtain: #869381;
+    --brass: #d2b45a;
+    --signal: #a8b98f;
+    --rule: #2c4235;
+    --bg: #0b1a15;
     color-scheme: dark;
   }
 }
